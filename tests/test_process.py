@@ -131,7 +131,7 @@ def test_t_frac_pelagic():
             t_frac_pelagic = np.where(
                 ocean_depth < PI_be_cutoff,
                 prey_pelagic.data / (prey_pelagic.data + prey_demersal.data),
-                1.0,
+                0.0,
             )
         # we should have successfully reconstructed the prey ratio
         assert (F.tendency_data.t_frac_pelagic.data[i, :] == t_frac_pelagic).all()
@@ -144,15 +144,6 @@ def test_t_frac_pelagic():
     F._compute_t_frac_pelagic(reset=True)
     for i, fish in enumerate(F.fish):
         assert (fish.t_frac_pelagic == fish_settings['members'][i]['t_frac_pelagic_static']).all()
-
-
-@pytest.mark.weak
-def test_update_benthic_prey():
-    """test benthic update
-
-    Add regression data
-    """
-    F._update_benthic_biomass()
 
 
 def test_compute_metabolism():
